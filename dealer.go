@@ -24,9 +24,11 @@ var keywords = []string{
 	"deals",
 }
 
-func keryWordExists(text string) bool {
+func keyWordExists(text string) bool {
 	for _, keyword := range keywords{
-		if strings.Contains(text, keyword) || strings.Contains(strings.Title(text), keyword) || strings.Contains(strings.ToLower(text), keyword) {
+		if strings.Contains(text, keyword) ||
+		 strings.Contains(strings.Title(text), keyword) ||
+		 strings.Contains(strings.ToLower(text), keyword) {
 			return true
 		} 
 	}
@@ -44,7 +46,7 @@ func displayDetails(single *goquery.Selection) {
 	text := strings.TrimSpace(single.Text())
 	href, _ := single.Attr("href")
 	length := utf8.RuneCountInString(text)
-	if (length > 5) && keryWordExists(text) {
+	if (length > 5) && keyWordExists(text) {
 			fmt.Println("Link", single.Text(), "--->", href)
 	}
 
