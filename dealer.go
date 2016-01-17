@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
-	"os"
+	"github.com/mushfiq/dealer/utils"
 	"strings"
 	"sync"
 	"unicode/utf8"
@@ -16,30 +16,17 @@ var links = []string{
 	"http://cunda.de",
 }
 
-var keywords = []string{
-	"sale",
-	"angebote",
-	"offer",
-	"hife",
-	"deals",
-}
+var keywords = utils.GetKeywords()
 
 func keyWordExists(text string) bool {
-	for _, keyword := range keywords{
-		if strings.Contains(text, keyword) ||
-		 strings.Contains(strings.Title(text), keyword) ||
-		 strings.Contains(strings.ToLower(text), keyword) {
+	for _, keyword := range keywords {
+		if strings.Contains(text, keyword.(string)) ||
+			strings.Contains(strings.Title(text), keyword.(string)) ||
+			strings.Contains(strings.ToLower(text), keyword.(string)) {
 			return true
-		} 
+		}
 	}
 	return false
-}
-
-func checkError(err error) {
-	if err != nil {
-		panic(err)
-		os.Exit(1)
-	}
 }
 
 func displayDetails(single *goquery.Selection) {
@@ -47,7 +34,7 @@ func displayDetails(single *goquery.Selection) {
 	href, _ := single.Attr("href")
 	length := utf8.RuneCountInString(text)
 	if (length > 5) && keyWordExists(text) {
-			fmt.Println("Link", single.Text(), "--->", href)
+		fmt.Println("Link", single.Text(), "--->", href)
 	}
 
 }
@@ -55,7 +42,7 @@ func displayDetails(single *goquery.Selection) {
 func fetchAndDisplay(link string, wg *sync.WaitGroup) {
 	fmt.Println(link)
 	doc, err := goquery.NewDocument(link)
-	checkError(err)
+	utils.CheckError(err)
 
 	sel := doc.Find("a")
 	for i := range sel.Nodes {
