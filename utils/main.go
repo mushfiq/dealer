@@ -1,9 +1,9 @@
 package utils
 
 import (
-	"github.com/bitly/go-simplejson"
-	"io/ioutil"
 	"os"
+	"io/ioutil"
+	"github.com/bitly/go-simplejson"
 )
 
 func CheckError(err error) {

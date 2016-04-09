@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/PuerkitoBio/goquery"
-	"github.com/mushfiq/dealer/utils"
 	"strings"
 	"sync"
 	"unicode/utf8"
+	"github.com/PuerkitoBio/goquery"
+	"github.com/mushfiq/dealer/utils"
 )
 
 var wg sync.WaitGroup
@@ -14,6 +14,7 @@ var wg sync.WaitGroup
 var links = []string{
 	"http://amazon.de",
 	"http://cunda.de",
+	"http://www.hm.com/de/",
 }
 
 var keywords = utils.GetKeywords()
@@ -33,7 +34,7 @@ func displayDetails(single *goquery.Selection) {
 	text := strings.TrimSpace(single.Text())
 	href, _ := single.Attr("href")
 	length := utf8.RuneCountInString(text)
-	if (length > 5) && keyWordExists(text) {
+	if ((length > 5) && keyWordExists(text)) || ((length > 5) && keyWordExists(href)) {
 		fmt.Println("Link", single.Text(), "--->", href)
 	}
 
