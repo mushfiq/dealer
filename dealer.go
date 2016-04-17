@@ -7,6 +7,8 @@ import (
 	"unicode/utf8"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/mushfiq/dealer/utils"
+	// "io/ioutil"
+	// "github.com/bitly/go-simplejson"
 )
 
 var wg sync.WaitGroup
@@ -17,9 +19,12 @@ var links = []string{
 	"http://www.hm.com/de/",
 }
 
-var keywords = utils.GetKeywords()
+var keywords = utils.GetConfig("keywords")
+
+var emailConfig = utils.GetConfig("email")
 
 func keyWordExists(text string) bool {
+	keywords := keywords.Get("keywords").MustArray()
 	for _, keyword := range keywords {
 		if strings.Contains(text, keyword.(string)) ||
 			strings.Contains(strings.Title(text), keyword.(string)) ||
@@ -59,4 +64,7 @@ func main() {
 		go fetchAndDisplay(link, &wg)
 	}
 	wg.Wait()
+	
+	// disabling email sending feature
+	// utils.SendEmail("Message", emailConfig)
 }
