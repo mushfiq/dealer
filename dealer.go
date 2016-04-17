@@ -7,8 +7,6 @@ import (
 	"unicode/utf8"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/mushfiq/dealer/utils"
-	// "io/ioutil"
-	// "github.com/bitly/go-simplejson"
 )
 
 var wg sync.WaitGroup
