@@ -3,7 +3,6 @@ package utils
 import (
 	"os"
 	"io/ioutil"
-	// "reflect"
 	"fmt"
 	"github.com/bitly/go-simplejson"
 	"github.com/mailgun/mailgun-go"
@@ -16,9 +15,7 @@ func SendEmail(emailBody string, emailConfig *simplejson.Json){
 		response, id, _ := gun.Send(mail)
 		fmt.Printf("Response ID: %s\n", id)
 		fmt.Printf("Message from server: %s\n", response)
-		
 	}
-
 }
 
 func CheckError(err error) {
@@ -33,7 +30,6 @@ func GetConfig(configType string) *simplejson.Json {
 	file, _ := ioutil.ReadFile(fileName)
 	config, err := simplejson.NewJson(file)
 	CheckError(err)
-	// fmt.Println(reflect.TypeOf(config))
 	return config
 }
 

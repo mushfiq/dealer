@@ -21,12 +21,18 @@ var keywords = utils.GetConfig("keywords")
 
 var emailConfig = utils.GetConfig("email")
 
-func keyWordExists(text string) bool {
-	keywords := keywords.Get("keywords").MustArray()
-	for _, keyword := range keywords {
-		if strings.Contains(text, keyword.(string)) ||
-			strings.Contains(strings.Title(text), keyword.(string)) ||
-			strings.Contains(strings.ToLower(text), keyword.(string)) {
+var products = utils.GetConfig("products")
+
+func wordExists(text string, searchtype string) bool {
+	words := products.Get("products").MustArray()
+	if (searchtype=="keywords"){
+		words = keywords.Get("keywords").MustArray()
+	}
+	
+	for _, word := range words {
+		if strings.Contains(text, word.(string)) ||
+			strings.Contains(strings.Title(text), word.(string)) ||
+			strings.Contains(strings.ToLower(text), word.(string)) {
 			return true
 		}
 	}
@@ -37,8 +43,10 @@ func displayDetails(single *goquery.Selection) {
 	text := strings.TrimSpace(single.Text())
 	href, _ := single.Attr("href")
 	length := utf8.RuneCountInString(text)
-	if ((length > 5) && keyWordExists(text)) || ((length > 5) && keyWordExists(href)) {
-		fmt.Println("Link", single.Text(), "--->", href)
+	if ((length > 5) && wordExists(text, "keywords")) || ((length > 5) && wordExists(href, "keywords")) {
+		if wordExists(text, "products"){
+			fmt.Println("Link", single.Text(), "--->", href)
+		}
 	}
 
 }
