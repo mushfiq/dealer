@@ -11,11 +11,7 @@ import (
 
 var wg sync.WaitGroup
 
-var links = []string{
-	"http://amazon.de",
-	"http://cunda.de",
-	"http://www.hm.com/de/",
-}
+var websites = utils.GetConfig("urls")
 
 var keywords = utils.GetConfig("keywords")
 
@@ -51,9 +47,8 @@ func displayDetails(single *goquery.Selection) {
 
 }
 
-func fetchAndDisplay(link string, wg *sync.WaitGroup) {
-	fmt.Println(link)
-	doc, err := goquery.NewDocument(link)
+func fetchAndDisplay(url string, wg *sync.WaitGroup) {
+	doc, err := goquery.NewDocument(url)
 	utils.CheckError(err)
 
 	sel := doc.Find("a")
@@ -65,9 +60,10 @@ func fetchAndDisplay(link string, wg *sync.WaitGroup) {
 }
 
 func main() {
-	for _, link := range links {
+	urls := websites.Get("urls").MustArray()
+	for _, url := range urls {
 		wg.Add(1)
-		go fetchAndDisplay(link, &wg)
+		go fetchAndDisplay(url.(string), &wg)
 	}
 	wg.Wait()
 	
