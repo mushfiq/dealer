@@ -2,5 +2,7 @@
 
 * build a small text parsing module
 * write module to read configuration from sqlite db
-* develop email sending feature
+* ~~develop email sending feature~~
+* add user management feature
+
 	
